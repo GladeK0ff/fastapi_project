@@ -1,9 +1,14 @@
 from fastapi import FastAPI, HTTPException
-from app.models import Pidaras
+from models import Pidaras
 import uvicorn
 
 app = FastAPI()
+
 pidaras = Pidaras
+
+
+
+
 pidarases_list = [
     {
         "id": 1,
