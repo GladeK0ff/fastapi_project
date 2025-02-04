@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  app:
+    depends_on:
+      postgres:
+        condition: service_started
+    image: pidaras:latest
+    build: .
+    ports:
+      - "80:80"
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "pidarases"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - "5432:5432"

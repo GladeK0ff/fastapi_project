@@ -7,7 +7,17 @@ class PidarasAddSchema(BaseModel):
     reason: str 
     is_dota_player: bool 
     is_cs_player: bool 
-
-
-class PidarasSchema(PidarasAddSchema):
-    id: int
+    
+    model_config ={
+        "json_schema_extra":{
+            "examples":[
+                {
+                    "name": "Антон",
+                    "pidaras_level": "Common",
+                    "reason": "Сосал", 
+                    "is_dota_player": True,
+                    "is_cs_player": True,
+                }
+            ]
+        }
+    }
