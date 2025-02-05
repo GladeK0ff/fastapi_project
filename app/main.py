@@ -27,21 +27,29 @@ CREATE TABLE IF NOT EXISTS pidaras (
 conn.commit()
 
 
+@app.get("/one/{pid}")
+async def get_one_pidaras(pid: int):
+  cur.execute(f"SELECT * FROM pidaras where id = {pid};")
+  result = cur.fetchall()
+  return result
+  
+
+
 @app.get("/list")
 async def get_pidarases():
-    cur.execute("SELECT * FROM pidaras;")
-    result = cur.fetchall()
-    return result
+  cur.execute("SELECT * FROM pidaras;")
+  result = cur.fetchall()
+  return result
 
 
 @app.post("/inputp")
 async def post_pidaras(pidaras: PidarasAddSchema):
-    cur.execute(f'''
-                INSERT into pidaras(pidaras_name, pidaras_level, reason, is_dota_player, is_cs_player) 
-                values ('{pidaras.name}', '{pidaras.pidaras_level}', '{pidaras.reason}', {pidaras.is_dota_player}, {pidaras.is_cs_player});
-                ''')
-    conn.commit()
-    return {"msg": "плюс пидарас"}
+  cur.execute(f'''
+              INSERT into pidaras(pidaras_name, pidaras_level, reason, is_dota_player, is_cs_player) 
+              values ('{pidaras.name}', '{pidaras.pidaras_level}', '{pidaras.reason}', {pidaras.is_dota_player}, {pidaras.is_cs_player});
+              ''')
+  conn.commit()
+  return {"msg": "плюс пидарас"}
 
 
 @app.put("/correct/{pid}")
