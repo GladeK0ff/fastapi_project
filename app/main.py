@@ -46,11 +46,13 @@ async def post_pidaras(pidaras: PidarasAddSchema):
 
 @app.put("/correct/{pid}")
 async def put_pidaras(pidaras: PidarasAddSchema, pid):
-  cur.execute(f"UPDATE pidaras SET pidaras_name = '{pidaras.name}' where id = {pid};")
-  cur.execute(f"UPDATE pidaras SET pidaras_level = '{pidaras.pidaras_level}' where id = {pid};") 
-  cur.execute(f"UPDATE pidaras SET reason = '{pidaras.reason}' where id = {pid};") 
-  cur.execute(f"UPDATE pidaras SET is_dota_player = '{pidaras.is_dota_player}' where id = {pid};") 
-  cur.execute(f"UPDATE pidaras SET is_cs_player = '{pidaras.is_cs_player}' where id = {pid};") 
+  cur.execute(f'''UPDATE pidaras SET
+                  pidaras_name = '{pidaras.name}', 
+                  pidaras_level = '{pidaras.pidaras_level}', 
+                  reason = '{pidaras.reason}', 
+                  is_dota_player = '{pidaras.is_dota_player}', 
+                  is_cs_player = '{pidaras.is_cs_player}' 
+                  where id = {pid};''')
   conn.commit()
   return {"msg": "пидарас изменен"}
 
