@@ -1,10 +1,8 @@
-version: "3.9"
 services:
   app:
     depends_on:
       postgres:
         condition: service_started
-    image: pidaras:latest
     build: .
     ports:
       - "80:80"
