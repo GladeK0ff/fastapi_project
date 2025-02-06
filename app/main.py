@@ -31,7 +31,9 @@ conn.commit()
 async def get_one_pidaras(pid: int):
   cur.execute(f"SELECT * FROM pidaras where id = {pid};")
   result = cur.fetchall()
-  return result
+  if result:
+    return result
+  return {"msg": f'не знаем пидараса с id = {pid}'}
   
 
 
@@ -39,7 +41,9 @@ async def get_one_pidaras(pid: int):
 async def get_pidarases():
   cur.execute("SELECT * FROM pidaras;")
   result = cur.fetchall()
-  return result
+  if result:
+    return result
+  return {"msg": "база пидарасов пуста... пока что"}
 
 
 @app.post("/inputp")
@@ -54,22 +58,31 @@ async def post_pidaras(pidaras: PidarasAddSchema):
 
 @app.put("/correct/{pid}")
 async def put_pidaras(pidaras: PidarasAddSchema, pid):
-  cur.execute(f'''UPDATE pidaras SET
-                  pidaras_name = '{pidaras.name}', 
-                  pidaras_level = '{pidaras.pidaras_level}', 
-                  reason = '{pidaras.reason}', 
-                  is_dota_player = '{pidaras.is_dota_player}', 
-                  is_cs_player = '{pidaras.is_cs_player}' 
-                  where id = {pid};''')
-  conn.commit()
-  return {"msg": "пидарас изменен"}
+  cur.execute(f"SELECT * FROM pidaras where id = {pid};")
+  result = cur.fetchall()
+  if result:
+    cur.execute(f'''UPDATE pidaras SET
+                    pidaras_name = '{pidaras.name}', 
+                    pidaras_level = '{pidaras.pidaras_level}', 
+                    reason = '{pidaras.reason}', 
+                    is_dota_player = '{pidaras.is_dota_player}', 
+                    is_cs_player = '{pidaras.is_cs_player}' 
+                    where id = {pid};''')
+    conn.commit()
+    return {"msg": "пидарас изменен"}
+  return {"msg": f"не было у нас пидараса с id = {pid}"}
+
 
 
 @app.delete("/delete/{pid}")
 async def delete_pidoras(pid):
-  cur.execute(f"DELETE from pidaras where id = {pid}")
-  conn.commit()
-  return {"msg": "пидарас удален"}
+  cur.execute(f"SELECT * FROM pidaras where id = {pid};")
+  result = cur.fetchall()
+  if result:
+    cur.execute(f"DELETE from pidaras where id = {pid}")
+    conn.commit()
+    return {"msg": "пидарас удален"}
+  return {"msg": f"не было у нас пидараса с id = {pid}"}
 
     
 
